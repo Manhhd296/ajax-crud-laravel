@@ -39,4 +39,9 @@ class StudentService
     {
         return $this->studentRepository->destroy($id);
     }
+
+    public function deleteAll(Request $request)
+    {
+        return $this->studentRepository->deleteAll($request);
+    }
 }

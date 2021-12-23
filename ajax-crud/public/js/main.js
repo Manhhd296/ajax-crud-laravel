@@ -12,6 +12,7 @@ $(document).ready(function () {
                 $('tbody').html("");
                 $.each(response.students, function (key, item) {
                     $('tbody').append('<tr>\
+                        <td><input type="checkbox" class="sub_chk" data-id="'+item.id+'"></td>\
                         <td>' + item.id + '</td>\
                         <td>' + item.name + '</td>\
                         <td>' + item.course + '</td>\
@@ -188,4 +189,62 @@ $(document).ready(function () {
         });
     });
 
+
+    // Delete all
+    $('#master').on('click', function(e) {
+     if($(this).is(':checked',true))  
+        {
+            $(".sub_chk").prop('checked', true);  
+        } else {  
+            $(".sub_chk").prop('checked',false);  
+        }  
+    });
+
+    $('.delete_all').on('click', function(e) {
+        var allVals = [];  
+        $(".sub_chk:checked").each(function() {  
+            allVals.push($(this).attr('data-id'));
+        });  
+
+        if(allVals.length <=0)  
+        {  
+            alert("Please select row.");  
+        }  else {  
+
+            var check = confirm("Are you sure you want to delete this row?");  
+            if(check == true){  
+
+                var join_selected_values = allVals.join(","); 
+
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'DELETE',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    data: 'ids='+join_selected_values,
+                    success: function (data) {
+                        // console.log(data);
+                        if(data.error == false){
+                            $('#success_message').html("");
+                            $('#success_message').addClass('alert alert-success');
+                            $('#success_message').text(data.message);
+                            $('.delete_student').text('Yes Delete');
+                            $('#DeleteModal').modal('hide');
+                            fetchstudent();
+                        }else{
+                            $('#success_message').addClass('alert alert-success');
+                            $('#success_message').text(data.message);
+                            $('.delete_student').text('Yes Delete');
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+                });
+
+              $.each(allVals, function( index, value ) {
+                  $('table tr').filter("[data-row-id='" + value + "']").remove();
+              });
+            }  
+        }  
+    });
 });

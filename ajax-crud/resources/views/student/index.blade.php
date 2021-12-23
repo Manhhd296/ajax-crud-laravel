@@ -120,9 +120,11 @@
                     </h4>
                 </div>
                 <div class="card-body">
+                    <button style="margin-bottom: 10px" class="btn btn-primary delete_all" data-url="{{ url('myproductsDeleteAll') }}">Delete All Selected</button>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th width="50px"><input type="checkbox" id="master"></th>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Course</th>

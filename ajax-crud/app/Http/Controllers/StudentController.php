@@ -47,4 +47,9 @@ class StudentController extends Controller
     {
         return $this->studentService->destroy($id);
     }
+
+    public function deleteAll(Request $request)
+    {
+        return $this->studentService->deleteAll($request);
+    }
 }

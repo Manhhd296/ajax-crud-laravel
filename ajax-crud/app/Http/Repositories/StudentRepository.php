@@ -141,4 +141,25 @@ class StudentRepository
             ]);
         }
     }
+
+    public function deleteAll(Request $request)
+    {
+        $ids = $request->ids;
+        $student = $this->student->whereIn('id',explode(",",$ids));
+        if($student)
+        {
+            $student->delete();
+            return response()->json([
+                'error'=> false,
+                'message'=>'Student Deleted Successfully.'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'error'=> true,
+                'message'=>'No Student Found.'
+            ]);
+        }
+    }
 }
